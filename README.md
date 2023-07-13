@@ -1,9 +1,15 @@
 ## Instruction
 
-PostMan contracts <a href="https://api.postman.com/collections/4168227-ea0991a4-946d-4fd0-9770-caf790f0a0fe?access_key=PMAT-01GP8KFRTA3Z2ERPA9W6Q9PE9X">here</a>
+### SMS providers. How to check
+1. Check app/Http/Controllers/AuthController.php:28
+2. When we run UserResetPasswordEvent we trigger all Listeners for this event
+3. The list for events you can check in the event service provider:
+   app/Providers/EventServiceProvider.php:25
+4. I've added possible listeners for the future
+5. The list of all providers https://prnt.sc/9MvCz5nO2H7Q
+6. We have one Abstract class and realisations
 
-Use it with the "Import" button in the Postman.
-
+### Auth 
 I use php-open-source-saver/jwt-auth as JWT auth package.<br/>
 
 Instruction:

@@ -2,7 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CourierUpdatedSocketEvent;
+use App\Events\UserResetPasswordEvent;
+use App\Models\MessageSettings;
+use App\Support\DTO\MessageDTO;
+use App\Support\DTO\RestaurantCourier;
+use App\Support\SMSCodes;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 
@@ -18,6 +25,14 @@ class AuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login']]);
     }
 
+    public function remind()
+    {
+        event(new UserResetPasswordEvent(new MessageDTO(
+            Auth::user(),
+            MessageSettings::where('code', SMSCodes::REMIND)->firstOrFail()
+        )));
+    }
+
     /**
      * Get a JWT via given credentials.
      *
@@ -27,7 +42,7 @@ class AuthController extends Controller
     {
         $credentials = request(['email', 'password']);
 
-        if (! $token = auth()->attempt($credentials)) {
+        if (!$token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
@@ -70,7 +85,7 @@ class AuthController extends Controller
     /**
      * Get the token array structure.
      *
-     * @param  string $token
+     * @param string $token
      *
      * @return JsonResponse
      */

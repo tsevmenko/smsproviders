@@ -7,6 +7,7 @@ use App\Models\Policy;
 use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Throwable;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -26,14 +27,19 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerPolicies();
+        try {
+            $this->registerPolicies();
 
-        $policies = Policy::groupBy('name')->pluck('name')->all();
+            $policies = Policy::groupBy('name')->pluck('name')->all();
 
-        foreach ($policies as $policy) {
-            Gate::define($policy, function (User $user) use ($policy) {
-                return $user->hasPermission($policy);
-            });
+            foreach ($policies as $policy) {
+                Gate::define($policy, function (User $user) use ($policy) {
+                    return $user->hasPermission($policy);
+                });
+            }
+        } catch (Throwable $exception) {
+            // prevent first touch exception
+            // need to add log
         }
     }
 }

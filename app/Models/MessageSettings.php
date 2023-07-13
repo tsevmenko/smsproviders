@@ -3,13 +3,9 @@
 namespace App\Models;
 
 use App\Support\PolicyTypes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
-use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable implements JWTSubject
+class MessageSettings extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -19,9 +15,9 @@ class User extends Authenticatable implements JWTSubject
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'phoneNumber',
-        'country',
+        'code',
+        'messageTemplate',
+        'transportType',
     ];
 
     /**

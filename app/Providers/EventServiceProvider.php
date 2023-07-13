@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Events\UserResetPasswordEvent;
+use App\Listeners\SMSProviders\SMSApiProvider;
+use App\Listeners\SMSProviders\SMSFirstProvider;
+use App\Listeners\SMSProviders\SMSSecondProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -18,6 +22,16 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        UserResetPasswordEvent::class => [
+            SMSApiProvider::class,
+            SMSFirstProvider::class,
+            SMSSecondProvider::class,
+            // could be
+            // RemindPasswordProvider::class,
+            // AnalyzeUserSecurityStatus::class,
+            // CloseAllUsersOpenedSessions::class,
+            // SetupAuthenticationViaMobileApplicationFlag::class,
+        ]
     ];
 
     /**

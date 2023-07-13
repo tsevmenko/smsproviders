@@ -8,12 +8,11 @@ ARG DOCKER_CONTAINER_GID
 RUN usermod  --uid $DOCKER_CONTAINER_UID www-data
 RUN groupmod --gid $DOCKER_CONTAINER_GID www-data
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    libzip-dev libpng-dev libfreetype6-dev libjpeg62-turbo-dev libmemcached-dev nano build-essential cron
+RUN apt-get update && apt-get install -y --no-install-recommends libzip-dev libpng-dev libfreetype6-dev \
+  libjpeg62-turbo-dev libmemcached-dev nano build-essential cron
 
 RUN docker-php-ext-install -j$(nproc) pdo_mysql zip exif pcntl gd
 RUN docker-php-ext-install mysqli
-RUN pecl install memcached && docker-php-ext-enable memcached
 
 RUN apt-get install -y --no-install-recommends libssl-dev
 RUN apt-get install zip unzip
