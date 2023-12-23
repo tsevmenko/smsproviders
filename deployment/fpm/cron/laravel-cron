@@ -1,1 +1,2 @@
-* * * * * cd /var/www/uny && php artisan schedule:run
+* * * * * cd /var/www/uny && /usr/local/bin/php -r "file_put_contents(\"test.txt\", time() . PHP_EOL, FILE_APPEND | LOCK_EX);" > /var/www/uny/storage/logs/cron-file.log 2>&1
+* * * * * cd /var/www/uny && /usr/local/bin/php artisan schedule:run > /var/www/uny/storage/logs/cron.log 2>&1

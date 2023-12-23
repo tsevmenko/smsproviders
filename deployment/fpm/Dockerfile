@@ -25,7 +25,6 @@ RUN chmod 0644 /etc/cron.d/laravel_cron \
     && touch /var/log/cron.log
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
-RUN if [ "$APP_ENV" = local ]; then mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"; fi
 RUN echo "memory_limit = 256M" >> "$PHP_INI_DIR/php.ini"
 RUN echo "upload_max_filesize = 128M" >> "$PHP_INI_DIR/php.ini"
 #RUN a2enmod rewrite
@@ -35,8 +34,5 @@ RUN echo 'zend_extension=xdebug' > /usr/local/etc/php/conf.d/docker-php-ext-xdeb
     echo 'xdebug.mode=develop,debug' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
     echo 'xdebug.client_host=host.docker.internal' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && \
     echo 'xdebug.start_with_request=yes' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-
-RUN if [ "$APP_ENV" = local ]; then pecl install xdebug && docker-php-ext-enable xdebug; fi
-RUN if ! [ "$APP_ENV" = local ]; then rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini; fi
 
 CMD ["php-fpm"]
